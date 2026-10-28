@@ -7,13 +7,13 @@
   <!-- iOS Standalone App Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="DesiMacro" />
+  <meta name="apple-mobile-web-app-title" content="DesiCut" />
   <meta name="theme-color" content="#000000" />
 
   <!-- App Icon -->
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%23000000'/><circle cx='90' cy='90' r='64' fill='none' stroke='%2310b981' stroke-width='12'/><path d='M60 90l20 20 40-40' fill='none' stroke='%2310b981' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
 
-  <title>DesiMacro — Student Nutrition & Habit Hub</title>
+  <title>DesiCut — Student Nutrition & Fat Loss Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -60,7 +60,7 @@
   <header class="flex items-center justify-between mb-4">
     <div>
       <div class="flex items-center gap-2">
-        <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-400">DesiMacro</span>
+        <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-400">DesiCut</span>
         <span class="text-[10px] bg-emerald-500/15 text-emerald-300 px-2.5 py-0.5 rounded-full font-semibold">Student Edition</span>
       </div>
       <h1 class="text-2xl font-bold tracking-tight text-white mt-0.5">Clean Daily Routine</h1>
@@ -208,7 +208,7 @@
 
     let activeDateKey = new Date().toISOString().slice(0, 10);
     let activeSlotIndex = null;
-    let store = JSON.parse(localStorage.getItem('desimacro_v1') || '{}');
+    let store = JSON.parse(localStorage.getItem('desicut_v1') || '{}');
 
     function ensureDay(dateKey) {
       if (!store[dateKey]) {
@@ -224,7 +224,7 @@
     }
 
     function saveStore() {
-      localStorage.setItem('desimacro_v1', JSON.stringify(store));
+      localStorage.setItem('desicut_v1', JSON.stringify(store));
       renderAll();
     }
 
