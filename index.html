@@ -3,59 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  
-  <!-- iOS Standalone App Meta Tags -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="DesiCut" />
   <meta name="theme-color" content="#000000" />
-
-  <!-- App Icon -->
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%23000000'/><circle cx='90' cy='90' r='64' fill='none' stroke='%2310b981' stroke-width='12'/><path d='M60 90l20 20 40-40' fill='none' stroke='%2310b981' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
-
   <title>DesiCut — Student Nutrition & Fat Loss Hub</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <style>
-    :root {
-      --sat: env(safe-area-inset-top, 20px);
-      --sab: env(safe-area-inset-bottom, 20px);
-    }
+    :root { --sat: env(safe-area-inset-top, 20px); --sab: env(safe-area-inset-bottom, 20px); color-scheme: dark; }
     body {
-      background-color: #000000;
-      color: #f4f4f5;
+      background-color: #000; color: #f4f4f5;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      padding-top: calc(var(--sat) + 8px);
-      padding-bottom: calc(var(--sab) + 110px);
-      letter-spacing: -0.01em;
+      -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none;
+      padding-top: calc(var(--sat) + 8px); padding-bottom: calc(var(--sab) + 110px); letter-spacing: -0.01em;
     }
+    input, select, textarea { -webkit-user-select: text; user-select: text; }
     .ios-glass {
-      background: rgba(24, 24, 27, 0.65);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      background: rgba(24, 24, 27, 0.65); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .floating-dock {
-      background: rgba(18, 18, 22, 0.75);
-      backdrop-filter: blur(35px);
-      -webkit-backdrop-filter: blur(35px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-      padding-bottom: calc(var(--sab) + 8px);
+      background: rgba(18, 18, 22, 0.75); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
+      border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); padding-bottom: calc(var(--sab) + 8px);
     }
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
+    .pop { animation: pop .35s cubic-bezier(.2,.9,.3,1.2); }
+    @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   </style>
 </head>
 <body class="max-w-md mx-auto px-4 min-h-screen">
 
-  <!-- Header & Profile Trigger -->
-  <header class="flex items-center justify-between mb-4">
+  <header class="flex items-center justify-between mb-1">
     <div>
       <div class="flex items-center gap-2">
         <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-400">DesiCut</span>
@@ -64,23 +43,18 @@
       <h1 id="userGreeting" class="text-2xl font-bold tracking-tight text-white mt-0.5">Hello, Student</h1>
     </div>
     <div class="flex items-center gap-2">
-      <button onclick="openProfileModal()" class="text-xs font-medium text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-3 py-1.5 rounded-full">
-        ⚙️ Profile
-      </button>
-      <button id="resetBtn" class="text-xs font-medium text-zinc-400 bg-zinc-900 active:bg-zinc-800 border border-zinc-800 px-3 py-1.5 rounded-full">
-        Reset
-      </button>
+      <button onclick="openProfileModal()" class="text-xs font-medium text-emerald-400 bg-emerald-950/40 border border-emerald-500/30 px-3 py-1.5 rounded-full active:scale-95 transition">⚙️ Profile</button>
+      <button id="resetBtn" class="text-xs font-medium text-zinc-400 bg-zinc-900 active:bg-zinc-800 border border-zinc-800 px-3 py-1.5 rounded-full">Reset</button>
     </div>
   </header>
+  <p id="profileLine" class="text-[11px] text-zinc-500 mb-3 min-h-[14px]"></p>
 
-  <!-- 7-Day Strip -->
   <div id="dayStrip" class="grid grid-cols-7 gap-1.5 mb-4"></div>
 
-  <!-- Calorie & Macro Dashboard -->
   <div class="ios-glass rounded-3xl p-5 mb-5">
     <div class="flex items-center justify-between mb-3">
       <div>
-        <span id="targetLabel" class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">Consumed / Target</span>
+        <span class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">Consumed / Target</span>
         <div class="flex items-baseline gap-1.5 mt-0.5">
           <span id="kcalConsumed" class="text-3xl font-extrabold tracking-tight text-white">0</span>
           <span id="kcalTargetText" class="text-xs text-zinc-500">/ 1,800 kcal</span>
@@ -92,7 +66,7 @@
       </div>
     </div>
     <div class="w-full h-2 bg-zinc-900 rounded-full overflow-hidden mb-3.5 border border-zinc-800">
-      <div id="kcalBar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-300" style="width: 0%"></div>
+      <div id="kcalBar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500" style="width: 0%"></div>
     </div>
     <div class="grid grid-cols-3 gap-2 text-center text-xs">
       <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl py-2.5">
@@ -110,39 +84,31 @@
     </div>
   </div>
 
-  <!-- TAB 1: MEALS & PRESETS VIEW -->
   <section id="view-meals" class="space-y-4">
     <div class="ios-glass rounded-3xl p-4 border-amber-500/30">
       <div class="flex items-center gap-2 mb-1">
         <span class="text-base">🍛</span>
         <h2 class="text-sm font-bold text-amber-400">Quick Add Desi Item</h2>
       </div>
-      <p class="text-[11px] text-zinc-400 mb-3">Ate biryani, singara, or extra items? Auto-estimate macros instantly.</p>
+      <p class="text-[11px] text-zinc-400 mb-3">Type an item, add a number for quantity (e.g. "2 singara"). Values are estimates.</p>
       <div class="flex gap-2">
-        <input id="quickFoodInput" type="text" placeholder="e.g. beef tehari, dal bhat, biscuit" class="flex-1 bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-amber-500" />
-        <button id="quickAddBtn" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95">
-          Add
-        </button>
+        <input id="quickFoodInput" type="text" enterkeyhint="done" placeholder="e.g. beef tehari, 2 roti, fuchka" class="flex-1 min-w-0 bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-base text-white placeholder-zinc-600 focus:outline-none focus:border-amber-500" />
+        <button id="quickAddBtn" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95">Add</button>
       </div>
     </div>
-
     <div id="mealsContainer" class="space-y-3"></div>
   </section>
 
-  <!-- TAB 2: WATER & HYDRATION VIEW -->
   <section id="view-water" class="hidden space-y-4">
     <div class="ios-glass rounded-3xl p-4">
       <div class="flex justify-between items-center">
         <div>
           <h2 class="font-bold text-sm text-white">Morning Lemon-Warm Water</h2>
-          <p class="text-[11px] text-zinc-400 mt-0.5">Metabolism booster on empty stomach</p>
+          <p class="text-[11px] text-zinc-400 mt-0.5">A simple morning hydration habit</p>
         </div>
-        <button id="detoxBtn" class="px-4 py-2 rounded-xl text-xs font-bold bg-zinc-800 text-zinc-300 border border-zinc-700">
-          Mark Done
-        </button>
+        <button id="detoxBtn" class="px-4 py-2 rounded-xl text-xs font-bold bg-zinc-800 text-zinc-300 border border-zinc-700">Mark Done</button>
       </div>
     </div>
-
     <div class="ios-glass rounded-3xl p-4">
       <div class="flex justify-between items-center mb-3">
         <h2 class="font-bold text-sm text-white">Daily Hydration (250ml / glass)</h2>
@@ -152,7 +118,6 @@
     </div>
   </section>
 
-  <!-- TAB 3: HABITS VIEW -->
   <section id="view-habits" class="hidden space-y-4">
     <div class="ios-glass rounded-3xl p-4 space-y-3">
       <h2 class="font-bold text-sm text-white">Student Wellness & Focus Habits</h2>
@@ -160,9 +125,11 @@
     </div>
   </section>
 
+  <p class="text-center text-[10px] text-zinc-600 mt-6 px-4 leading-relaxed">Estimates only, not medical advice. Talk to a doctor before a major diet change. Your data stays on this device.</p>
+
   <!-- SWAP MODAL -->
   <div id="swapModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-end justify-center">
-    <div class="ios-glass w-full max-w-md rounded-t-3xl p-5 space-y-3 border-t border-zinc-700 max-h-[85vh] overflow-y-auto">
+    <div class="ios-glass w-full max-w-md rounded-t-3xl p-5 space-y-3 border-t border-zinc-700 max-h-[85vh] overflow-y-auto pop">
       <div class="flex justify-between items-center">
         <h3 class="font-bold text-sm text-white">Select Clean Whole-Food Preset</h3>
         <button id="closeModalBtn" class="text-xs text-zinc-400 px-2 py-1 bg-zinc-900 rounded-lg">Close</button>
@@ -172,32 +139,42 @@
     </div>
   </div>
 
-  <!-- ONBOARDING PROFILE SETUP MODAL -->
-  <div id="profileModal" class="fixed inset-0 bg-black/90 backdrop-blur-lg z-50 flex items-center justify-center p-4">
-    <div class="ios-glass w-full max-w-md rounded-3xl p-6 space-y-4 border border-zinc-700 shadow-2xl">
+  <!-- PROFILE MODAL -->
+  <div id="profileModal" class="fixed inset-0 bg-black/90 backdrop-blur-lg z-50 flex items-center justify-center p-4 hidden">
+    <div class="ios-glass w-full max-w-md rounded-3xl p-6 space-y-4 border border-zinc-700 shadow-2xl max-h-[92vh] overflow-y-auto pop">
       <div>
         <h2 class="text-lg font-bold text-white">Welcome to DesiCut 🌿</h2>
-        <p class="text-xs text-zinc-400 mt-0.5">Enter your physical stats so we can calculate your custom fat-loss calorie target.</p>
+        <p class="text-xs text-zinc-400 mt-0.5">Enter your stats to calculate a calorie target. It is an estimate, not medical advice.</p>
       </div>
-
       <div class="space-y-3 text-xs">
         <div>
           <label class="block text-zinc-400 mb-1 font-medium">Your Name</label>
-          <input id="inputName" type="text" placeholder="e.g. Ashraful" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-white" />
+          <input id="inputName" type="text" maxlength="24" placeholder="e.g. Ashraful" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-base text-white" />
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
+            <label class="block text-zinc-400 mb-1 font-medium">Age</label>
+            <input id="inputAge" type="number" inputmode="numeric" placeholder="22" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-base text-white" />
+          </div>
+          <div>
+            <label class="block text-zinc-400 mb-1 font-medium">Sex</label>
+            <select id="inputSex" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-base text-white">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div>
             <label class="block text-zinc-400 mb-1 font-medium">Height (cm)</label>
-            <input id="inputHeight" type="number" placeholder="170" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-white" />
+            <input id="inputHeight" type="number" inputmode="decimal" placeholder="170" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-base text-white" />
           </div>
           <div>
             <label class="block text-zinc-400 mb-1 font-medium">Weight (kg)</label>
-            <input id="inputWeight" type="number" placeholder="74" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-white" />
+            <input id="inputWeight" type="number" inputmode="decimal" placeholder="74" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-base text-white" />
           </div>
         </div>
         <div>
           <label class="block text-zinc-400 mb-1 font-medium">Estimated Body Fat / Physique</label>
-          <select id="inputBodyFat" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-white">
+          <select id="inputBodyFat" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-base text-white">
             <option value="medium">Medium / Soft (Belly fat & average build)</option>
             <option value="high">High / Overweight (Needs steady calorie deficit)</option>
             <option value="lean">Low / Lean (Maintaining or slight toning)</option>
@@ -205,34 +182,24 @@
         </div>
         <div>
           <label class="block text-zinc-400 mb-1 font-medium">Primary Goal</label>
-          <select id="inputGoal" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-white">
-            <option value="fat_loss">Aggressive Belly Fat Loss (Recommended)</option>
-            <option value="lean_cut">Steady Clean Cut</option>
+          <select id="inputGoal" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-base text-white">
+            <option value="fat_loss">Belly Fat Loss (about 500 kcal deficit)</option>
+            <option value="lean_cut">Steady Clean Cut (about 300 kcal deficit)</option>
             <option value="maintain">Maintain Weight & Recompose</option>
           </select>
         </div>
       </div>
-
-      <button onclick="saveProfile()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-3 rounded-2xl text-xs transition-all shadow-lg shadow-emerald-500/20">
-        Generate My Custom Routine ⚡
-      </button>
+      <div class="flex gap-2">
+        <button id="cancelProfileBtn" onclick="closeProfileModal()" class="hidden px-5 bg-zinc-800 text-zinc-200 font-bold py-3 rounded-2xl text-xs">Cancel</button>
+        <button onclick="saveProfile()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-[.98] text-black font-bold py-3 rounded-2xl text-xs transition-all shadow-lg shadow-emerald-500/20">Generate My Custom Routine ⚡</button>
+      </div>
     </div>
   </div>
 
-  <!-- FLOATING GLASS BOTTOM NAVIGATION BAR -->
   <nav class="floating-dock fixed bottom-4 left-4 right-4 max-w-md mx-auto rounded-3xl px-6 py-2.5 flex justify-around items-center z-40">
-    <button data-tab="meals" class="nav-tab flex flex-col items-center gap-0.5 text-emerald-400 transition-all">
-      <span class="text-lg">🍽️</span>
-      <span class="text-[10px] font-semibold tracking-tight">Diet Routine</span>
-    </button>
-    <button data-tab="water" class="nav-tab flex flex-col items-center gap-0.5 text-zinc-400 transition-all">
-      <span class="text-lg">💧</span>
-      <span class="text-[10px] font-semibold tracking-tight">Hydration</span>
-    </button>
-    <button data-tab="habits" class="nav-tab flex flex-col items-center gap-0.5 text-zinc-400 transition-all">
-      <span class="text-lg">⚡</span>
-      <span class="text-[10px] font-semibold tracking-tight">Habits</span>
-    </button>
+    <button data-tab="meals" class="nav-tab flex flex-col items-center gap-0.5 text-emerald-400 transition-all"><span class="text-lg">🍽️</span><span class="text-[10px] font-semibold tracking-tight">Diet Routine</span></button>
+    <button data-tab="water" class="nav-tab flex flex-col items-center gap-0.5 text-zinc-400 transition-all"><span class="text-lg">💧</span><span class="text-[10px] font-semibold tracking-tight">Hydration</span></button>
+    <button data-tab="habits" class="nav-tab flex flex-col items-center gap-0.5 text-zinc-400 transition-all"><span class="text-lg">⚡</span><span class="text-[10px] font-semibold tracking-tight">Habits</span></button>
   </nav>
 
   <script>
@@ -253,38 +220,68 @@
       { name: 'Double Egg Scramble with 2 Toasted Breads', kcal: 360, pro: 18, fiber: 2 }
     ];
 
-    let activeDateKey = new Date().toISOString().slice(0, 10);
+    // [keywords, kcal, protein, fiber] per single serving or piece
+    const FOODS = [
+      ['biryani tehari', 650, 24, 3], ['khichuri', 500, 14, 6], ['singara samosa', 180, 3, 2],
+      ['dal lentil', 150, 9, 5], ['fish rui ilish pangas', 250, 22, 0], ['beef', 280, 26, 0],
+      ['chicken', 240, 25, 0], ['egg', 100, 7, 0], ['paratha', 280, 5, 2], ['roti ruti', 100, 3, 2],
+      ['rice bhat', 200, 4, 1], ['fuchka puchka', 220, 4, 3], ['chotpoti', 280, 10, 6],
+      ['halim', 350, 18, 6], ['mishti misti roshogolla sweet', 150, 3, 0], ['biscuit', 70, 1, 0],
+      ['tea', 80, 2, 0], ['muri', 150, 3, 1], ['burger', 520, 22, 2], ['noodle', 430, 10, 2]
+    ];
+
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const dateKey = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const load = (k, fb) => { try { return JSON.parse(localStorage.getItem(k)) ?? fb; } catch (e) { return fb; } };
+
+    let activeDateKey = dateKey(new Date());
     let activeSlotIndex = null;
-    let userProfile = JSON.parse(localStorage.getItem('desicut_profile_v1') || 'null');
-    let store = JSON.parse(localStorage.getItem('desicut_public_v1') || '{}');
+    let userProfile = load('desicut_profile_v1', null);
+    let store = load('desicut_public_v1', {});
 
     function checkOnboarding() {
+      const modal = document.getElementById('profileModal');
       if (!userProfile) {
-        document.getElementById('profileModal').classList.remove('hidden');
+        modal.classList.remove('hidden');
+        document.getElementById('cancelProfileBtn').classList.add('hidden');
       } else {
-        document.getElementById('profileModal').classList.add('hidden');
+        modal.classList.add('hidden');
         document.getElementById('userGreeting').textContent = `Hello, ${userProfile.name}`;
+        const line = [];
+        if (userProfile.bmi) line.push(`BMI ${userProfile.bmi}`);
+        if (userProfile.note) line.push(userProfile.note);
+        document.getElementById('profileLine').textContent = line.join(' · ');
       }
     }
 
     function saveProfile() {
-      const name = document.getElementById('inputName').value.trim() || 'Student';
-      const height = parseFloat(document.getElementById('inputHeight').value) || 170;
-      const weight = parseFloat(document.getElementById('inputWeight').value) || 70;
-      const bodyFat = document.getElementById('inputBodyFat').value;
-      const goal = document.getElementById('inputGoal').value;
+      const g = id => document.getElementById(id);
+      const clamp = (v, a, b, d) => { v = parseFloat(v); return isNaN(v) ? d : Math.min(b, Math.max(a, v)); };
+      const name = g('inputName').value.trim().slice(0, 24) || 'Student';
+      const height = clamp(g('inputHeight').value, 100, 250, 170);
+      const weight = clamp(g('inputWeight').value, 30, 250, 70);
+      const age = Math.round(clamp(g('inputAge').value, 14, 80, 22));
+      const sex = g('inputSex').value;
+      const bodyFat = g('inputBodyFat').value;
+      let goal = g('inputGoal').value;
+      let note = '';
 
-      // Estimate BMR & Target Calories based on inputs
-      let bmr = 10 * weight + 6.25 * height - 5 * 22 + 5; // standard male baseline
-      let targetKcal = Math.round(bmr * 1.2 - 500); // deficit for cutting
-      if (targetKcal < 1400) targetKcal = 1400; // safety floor
-      if (targetKcal > 2100) targetKcal = 2100;
+      const bmi = weight / Math.pow(height / 100, 2);
+      if (age < 18 && goal !== 'maintain') { goal = 'maintain'; note = 'Under 18: no calorie deficit applied'; }
+      else if (bmi < 18.5 && goal !== 'maintain') { goal = 'maintain'; note = 'BMI under 18.5: set to maintenance'; }
 
-      const targetProtein = Math.round(weight * 1.5); // ~1.5g per kg
+      let deficit = { fat_loss: 500, lean_cut: 300, maintain: 0 }[goal];
+      if (bodyFat === 'lean' && deficit > 300) { deficit = 300; if (!note) note = 'Lean build: gentler deficit'; }
 
-      userProfile = { name, height, weight, bodyFat, goal, targetKcal, targetProtein };
-      localStorage.setItem('desicut_profile_v1', JSON.stringify(userProfile));
-      
+      const bmr = 10 * weight + 6.25 * height - 5 * age + (sex === 'male' ? 5 : -161);
+      const floor = sex === 'male' ? 1500 : 1200;
+      let targetKcal = Math.round((bmr * 1.2 - deficit) / 10) * 10;
+      if (deficit && targetKcal < floor) targetKcal = floor;
+      if (targetKcal > 3000) targetKcal = 3000;
+      const targetProtein = Math.round(weight * 1.5);
+
+      userProfile = { name, height, weight, age, sex, bodyFat, goal, targetKcal, targetProtein, bmi: bmi.toFixed(1), note };
+      try { localStorage.setItem('desicut_profile_v1', JSON.stringify(userProfile)); } catch (e) {}
       checkOnboarding();
       renderAll();
     }
@@ -294,27 +291,32 @@
         document.getElementById('inputName').value = userProfile.name;
         document.getElementById('inputHeight').value = userProfile.height;
         document.getElementById('inputWeight').value = userProfile.weight;
+        document.getElementById('inputAge').value = userProfile.age || 22;
+        document.getElementById('inputSex').value = userProfile.sex || 'male';
         document.getElementById('inputBodyFat').value = userProfile.bodyFat;
         document.getElementById('inputGoal').value = userProfile.goal;
+        document.getElementById('cancelProfileBtn').classList.remove('hidden');
       }
       document.getElementById('profileModal').classList.remove('hidden');
     }
 
-    function ensureDay(dateKey) {
-      if (!store[dateKey]) {
-        store[dateKey] = {
+    function closeProfileModal() {
+      if (userProfile) document.getElementById('profileModal').classList.add('hidden');
+    }
+
+    function ensureDay(key) {
+      if (!store[key]) {
+        store[key] = {
           meals: DEFAULT_SLOTS.map(s => ({ ...s, status: 'pending', actualTitle: s.title, actualKcal: s.kcal, actualPro: s.pro, actualFiber: s.fiber })),
-          water: 0,
-          detox: false,
-          extras: [],
+          water: 0, detox: false, extras: [],
           habits: { walk: false, noSugarTea: false, stretch: false }
         };
       }
-      return store[dateKey];
+      return store[key];
     }
 
     function saveStore() {
-      localStorage.setItem('desicut_public_v1', JSON.stringify(store));
+      try { localStorage.setItem('desicut_public_v1', JSON.stringify(store)); } catch (e) {}
       renderAll();
     }
 
@@ -324,13 +326,11 @@
       for (let i = 6; i >= 0; i--) {
         const d = new Date();
         d.setDate(d.getDate() - i);
-        const key = d.toISOString().slice(0, 10);
-        const dayName = d.toLocaleDateString('en-US', { weekday: 'narrow' });
-        const dayNum = d.getDate();
+        const key = dateKey(d);
         const isSelected = key === activeDateKey;
         const btn = document.createElement('button');
-        btn.className = `py-2 rounded-2xl flex flex-col items-center text-xs transition-all ${isSelected ? 'bg-emerald-500 text-black font-bold shadow-lg shadow-emerald-500/25' : 'ios-glass text-zinc-400'}`;
-        btn.innerHTML = `<span class="text-[9px] opacity-80 uppercase">${dayName}</span><span class="text-sm font-bold">${dayNum}</span>`;
+        btn.className = `py-2 rounded-2xl flex flex-col items-center text-xs transition-all active:scale-95 ${isSelected ? 'bg-emerald-500 text-black font-bold shadow-lg shadow-emerald-500/25' : 'ios-glass text-zinc-400'}`;
+        btn.innerHTML = `<span class="text-[9px] opacity-80 uppercase">${d.toLocaleDateString('en-US', { weekday: 'narrow' })}</span><span class="text-sm font-bold">${d.getDate()}</span>`;
         btn.onclick = () => { activeDateKey = key; renderAll(); };
         strip.appendChild(btn);
       }
@@ -338,12 +338,15 @@
 
     function switchTab(tabName) {
       ['meals', 'water', 'habits'].forEach(t => {
-        document.getElementById(`view-${t}`).classList.toggle('hidden', t !== tabName);
+        const el = document.getElementById(`view-${t}`);
+        el.classList.toggle('hidden', t !== tabName);
+        if (t === tabName) { el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
       });
       document.querySelectorAll('.nav-tab').forEach(btn => {
         const isMatch = btn.getAttribute('data-tab') === tabName;
-        btn.className = `nav-tab flex flex-col items-center gap-0.5 ${isMatch ? 'text-emerald-400 scale-105' : 'text-zinc-400'}`;
+        btn.className = `nav-tab flex flex-col items-center gap-0.5 transition-all ${isMatch ? 'text-emerald-400 scale-105' : 'text-zinc-400'}`;
       });
+      window.scrollTo(0, 0);
     }
 
     function openSwapModal(idx) {
@@ -353,14 +356,11 @@
       WHOLE_FOOD_PRESETS.forEach(p => {
         const btn = document.createElement('button');
         btn.className = 'p-3 rounded-2xl bg-zinc-900/90 border border-zinc-800 text-left active:bg-zinc-800';
-        btn.innerHTML = `<div class="text-xs font-bold text-zinc-100">${p.name}</div><div class="text-[10px] text-emerald-400 mt-0.5 font-medium">${p.kcal} kcal • ${p.pro}g Protein • ${p.fiber}g Fiber</div>`;
+        btn.innerHTML = `<div class="text-xs font-bold text-zinc-100">${esc(p.name)}</div><div class="text-[10px] text-emerald-400 mt-0.5 font-medium">${p.kcal} kcal • ${p.pro}g Protein • ${p.fiber}g Fiber</div>`;
         btn.onclick = () => {
-          const day = ensureDay(activeDateKey);
-          day.meals[activeSlotIndex].actualTitle = p.name;
-          day.meals[activeSlotIndex].actualKcal = p.kcal;
-          day.meals[activeSlotIndex].actualPro = p.pro;
-          day.meals[activeSlotIndex].actualFiber = p.fiber;
-          day.meals[activeSlotIndex].status = 'swapped';
+          const m = ensureDay(activeDateKey).meals[activeSlotIndex];
+          m.actualTitle = p.name; m.actualKcal = p.kcal; m.actualPro = p.pro; m.actualFiber = p.fiber;
+          m.status = 'swapped';
           closeSwapModal();
           saveStore();
         };
@@ -369,20 +369,14 @@
       document.getElementById('swapModal').classList.remove('hidden');
     }
 
-    function closeSwapModal() {
-      document.getElementById('swapModal').classList.add('hidden');
-    }
+    function closeSwapModal() { document.getElementById('swapModal').classList.add('hidden'); }
 
     function estimateFood(query) {
       const q = query.toLowerCase();
-      if (q.includes('biryani') || q.includes('tehari')) return { kcal: 650, pro: 24, fiber: 3 };
-      if (q.includes('khichuri')) return { kcal: 500, pro: 14, fiber: 6 };
-      if (q.includes('singara') || q.includes('samosa')) return { kcal: 180, pro: 3, fiber: 2 };
-      if (q.includes('dal') || q.includes('lentil')) return { kcal: 150, pro: 9, fiber: 5 };
-      if (q.includes('fish') || q.includes('rui')) return { kcal: 250, pro: 22, fiber: 0 };
-      if (q.includes('egg')) return { kcal: 100, pro: 7, fiber: 0 };
-      if (q.includes('paratha')) return { kcal: 280, pro: 5, fiber: 2 };
-      return { kcal: 320, pro: 10, fiber: 3 };
+      const hit = FOODS.find(f => f[0].split(' ').some(w => q.includes(w))) || ['', 320, 10, 3];
+      const n = q.match(/^(\d+)\s*x?\s|\bx(\d+)\b/);
+      const mult = n ? Math.min(10, parseInt(n[1] || n[2], 10)) : 1;
+      return { kcal: hit[1] * mult, pro: hit[2] * mult, fiber: hit[3] * mult };
     }
 
     function renderAll() {
@@ -391,58 +385,39 @@
       const targetKcal = userProfile ? userProfile.targetKcal : 1800;
       const targetProtein = userProfile ? userProfile.targetProtein : 110;
 
-      let kcal = 0;
-      let pro = 0;
-      let fiber = 0;
-
+      let kcal = 0, pro = 0, fiber = 0;
       day.meals.forEach(m => {
-        if (m.status === 'done' || m.status === 'swapped') {
-          kcal += m.actualKcal;
-          pro += m.actualPro;
-          fiber += m.actualFiber;
-        }
+        if (m.status === 'done' || m.status === 'swapped') { kcal += m.actualKcal; pro += m.actualPro; fiber += m.actualFiber; }
       });
-
-      if (day.extras) {
-        day.extras.forEach(ex => {
-          kcal += ex.kcal;
-          pro += ex.pro;
-          fiber += ex.fiber;
-        });
-      }
+      (day.extras || []).forEach(ex => { kcal += ex.kcal; pro += ex.pro; fiber += ex.fiber; });
 
       const rem = targetKcal - kcal;
       document.getElementById('kcalConsumed').textContent = kcal;
       document.getElementById('kcalTargetText').textContent = `/ ${targetKcal} kcal`;
       document.getElementById('kcalRemaining').textContent = rem >= 0 ? rem : `${Math.abs(rem)} over`;
       document.getElementById('kcalRemaining').className = `text-xl font-bold ${rem >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
-      document.getElementById('kcalBar').style.width = `${Math.min(100, (kcal / targetKcal) * 100)}%`;
+      const bar = document.getElementById('kcalBar');
+      bar.style.width = `${Math.min(100, (kcal / targetKcal) * 100)}%`;
+      bar.className = `h-full transition-all duration-500 bg-gradient-to-r ${rem >= 0 ? 'from-emerald-500 to-teal-400' : 'from-rose-500 to-orange-400'}`;
       document.getElementById('proTotal').textContent = `${pro}g`;
       document.getElementById('proTargetText').textContent = `/${targetProtein}g`;
       document.getElementById('waterSummary').textContent = `${(day.water * 0.25).toFixed(2)}L`;
       document.getElementById('fiberSummary').textContent = `${fiber}g`;
 
-      // Render Meals
       const mc = document.getElementById('mealsContainer');
       mc.innerHTML = '';
-      
+
       if (day.extras && day.extras.length > 0) {
         const extraBox = document.createElement('div');
         extraBox.className = 'ios-glass rounded-2xl p-4 border-amber-500/40 bg-amber-950/15 mb-3';
-        extraBox.innerHTML = `<h3 class="text-xs font-bold text-amber-400 mb-2.5">🍛 Unplanned Desi Items:</h3>`;
-        day.extras.forEach((ex, exIdx) => {
-          extraBox.innerHTML += `
-            <div class="flex justify-between items-center text-xs bg-zinc-900/90 border border-zinc-800/80 px-3 py-2.5 rounded-xl mb-2">
-              <div>
-                <span class="font-bold text-white">${ex.name}</span>
-              </div>
-              <div class="flex items-center gap-2.5">
-                <span class="text-amber-400 font-bold">+${ex.kcal} kcal (${ex.pro}g P)</span>
-                <button data-extra-remove="${exIdx}" class="text-zinc-500 hover:text-white px-1">✕</button>
-              </div>
+        extraBox.innerHTML = `<h3 class="text-xs font-bold text-amber-400 mb-2.5">🍛 Unplanned Desi Items:</h3>` + day.extras.map((ex, i) => `
+          <div class="flex justify-between items-center text-xs bg-zinc-900/90 border border-zinc-800/80 px-3 py-2.5 rounded-xl mb-2">
+            <span class="font-bold text-white">${esc(ex.name)}</span>
+            <div class="flex items-center gap-2.5">
+              <span class="text-amber-400 font-bold">+${ex.kcal} kcal (${ex.pro}g P)</span>
+              <button data-extra-remove="${i}" class="text-zinc-500 hover:text-white px-1">✕</button>
             </div>
-          `;
-        });
+          </div>`).join('');
         mc.appendChild(extraBox);
       }
 
@@ -452,23 +427,19 @@
         card.className = `ios-glass rounded-2xl p-4 transition-all ${isLogged ? 'border-emerald-500/40 bg-emerald-950/15' : ''}`;
         card.innerHTML = `
           <div class="flex justify-between items-start mb-1.5">
-            <span class="text-[11px] font-medium text-zinc-400">${m.time}</span>
+            <span class="text-[11px] font-medium text-zinc-400">${esc(m.time)}</span>
             <span class="text-xs font-bold ${m.status === 'swapped' ? 'text-amber-400' : 'text-emerald-400'}">${m.actualKcal} kcal • ${m.actualPro}g P</span>
           </div>
-          <p class="text-sm font-semibold text-white mb-3.5 leading-snug">${m.actualTitle}</p>
+          <p class="text-sm font-semibold text-white mb-3.5 leading-snug">${esc(m.actualTitle)}</p>
           <div class="flex gap-2">
-            <button data-action="toggle" data-index="${idx}" class="flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${isLogged ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-500/20' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700/50'}">
+            <button data-action="toggle" data-index="${idx}" class="flex-1 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 ${isLogged ? 'bg-emerald-500 text-black shadow-lg shadow-emerald-500/20' : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700/50'}">
               ${isLogged ? '✓ Logged' : '✓ Ate Planned'}
             </button>
-            <button data-action="swap" data-index="${idx}" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-zinc-300">
-              ⇄ Whole Food Swap
-            </button>
-          </div>
-        `;
+            <button data-action="swap" data-index="${idx}" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-zinc-300 active:scale-95 transition-all">⇄ Whole Food Swap</button>
+          </div>`;
         mc.appendChild(card);
       });
 
-      // Render Water
       const detoxBtn = document.getElementById('detoxBtn');
       detoxBtn.textContent = day.detox ? '✓ Done' : 'Mark Done';
       detoxBtn.className = `px-4 py-2 rounded-xl text-xs font-bold ${day.detox ? 'bg-emerald-500 text-black' : 'bg-zinc-800 text-zinc-300 border border-zinc-700'}`;
@@ -479,74 +450,64 @@
       for (let i = 1; i <= 12; i++) {
         const filled = i <= day.water;
         const b = document.createElement('button');
-        b.className = `h-12 rounded-2xl font-bold text-xs flex flex-col items-center justify-center border transition-all ${filled ? 'bg-sky-500/20 border-sky-400 text-sky-300 shadow-sm shadow-sky-500/20' : 'bg-zinc-900 border-zinc-800 text-zinc-500'}`;
+        b.className = `h-12 rounded-2xl font-bold text-xs flex flex-col items-center justify-center border transition-all active:scale-95 ${filled ? 'bg-sky-500/20 border-sky-400 text-sky-300 shadow-sm shadow-sky-500/20' : 'bg-zinc-900 border-zinc-800 text-zinc-500'}`;
         b.innerHTML = `<span>💧</span><span class="text-[10px] mt-0.5">${i * 250}ml</span>`;
         b.onclick = () => { day.water = (day.water === i) ? i - 1 : i; saveStore(); };
         wg.appendChild(b);
       }
 
-      // Render Habits
-      const hc = document.getElementById('habitChecklist');
       const habitsConfig = [
         { key: 'walk', label: '🚶‍♂️ 7,000+ Steps (Campus walking / evening stroll)' },
         { key: 'noSugarTea', label: '🍵 Zero Added Sugar in Tea/Coffee' },
         { key: 'stretch', label: '🧘‍♂️ 10 Min Light Stretching & Posture Check' }
       ];
-      hc.innerHTML = habitsConfig.map(h => `
+      document.getElementById('habitChecklist').innerHTML = habitsConfig.map(h => `
         <div class="flex items-center justify-between bg-zinc-900/80 border border-zinc-800 px-3.5 py-3 rounded-2xl">
-          <span class="font-medium text-zinc-200">${h.label}</span>
-          <button data-habit="${h.key}" class="px-3 py-1.5 rounded-xl text-xs font-bold ${day.habits[h.key] ? 'bg-emerald-500 text-black' : 'bg-zinc-800 text-zinc-400'}">
-            ${day.habits[h.key] ? 'Done' : 'Check'}
-          </button>
-        </div>
-      `).join('');
+          <span class="font-medium text-zinc-200 pr-2">${h.label}</span>
+          <button data-habit="${h.key}" class="px-3 py-1.5 rounded-xl text-xs font-bold flex-none ${day.habits[h.key] ? 'bg-emerald-500 text-black' : 'bg-zinc-800 text-zinc-400'}">${day.habits[h.key] ? 'Done' : 'Check'}</button>
+        </div>`).join('');
     }
 
     document.addEventListener('click', (e) => {
-      const target = e.target;
-      if (target.matches('[data-action="toggle"]')) {
-        const idx = parseInt(target.getAttribute('data-index'), 10);
-        const day = ensureDay(activeDateKey);
-        day.meals[idx].status = day.meals[idx].status === 'done' ? 'pending' : 'done';
+      const t = e.target.closest('button');
+      if (!t) return;
+      const day = ensureDay(activeDateKey);
+      const action = t.getAttribute('data-action');
+      if (action === 'toggle') {
+        const m = day.meals[parseInt(t.getAttribute('data-index'), 10)];
+        if (m.status === 'pending') {
+          m.status = 'done';
+        } else {
+          m.status = 'pending';
+          m.actualTitle = m.title; m.actualKcal = m.kcal; m.actualPro = m.pro; m.actualFiber = m.fiber;
+        }
         saveStore();
-      }
-      if (target.matches('[data-action="swap"]')) {
-        const idx = parseInt(target.getAttribute('data-index'), 10);
-        openSwapModal(idx);
-      }
-      if (target.hasAttribute('data-extra-remove')) {
-        const idx = parseInt(target.getAttribute('data-extra-remove'), 10);
-        const day = ensureDay(activeDateKey);
-        day.extras.splice(idx, 1);
+      } else if (action === 'swap') {
+        openSwapModal(parseInt(t.getAttribute('data-index'), 10));
+      } else if (t.hasAttribute('data-extra-remove')) {
+        day.extras.splice(parseInt(t.getAttribute('data-extra-remove'), 10), 1);
         saveStore();
-      }
-      if (target.hasAttribute('data-habit')) {
-        const key = target.getAttribute('data-habit');
-        const day = ensureDay(activeDateKey);
-        day.habits[key] = !day.habits[key];
+      } else if (t.hasAttribute('data-habit')) {
+        const k = t.getAttribute('data-habit');
+        day.habits[k] = !day.habits[k];
         saveStore();
       }
     });
 
-    document.getElementById('quickAddBtn').addEventListener('click', () => {
+    function quickAdd() {
       const input = document.getElementById('quickFoodInput');
-      const val = input.value.trim();
+      const val = input.value.trim().slice(0, 60);
       if (!val) return;
-
-      const estimation = estimateFood(val);
+      const est = estimateFood(val);
       const day = ensureDay(activeDateKey);
       if (!day.extras) day.extras = [];
-      
-      day.extras.push({
-        name: val.charAt(0).toUpperCase() + val.slice(1),
-        kcal: estimation.kcal,
-        pro: estimation.pro,
-        fiber: estimation.fiber
-      });
-
+      day.extras.push({ name: val.charAt(0).toUpperCase() + val.slice(1), kcal: est.kcal, pro: est.pro, fiber: est.fiber });
       input.value = '';
       saveStore();
-    });
+    }
+
+    document.getElementById('quickAddBtn').addEventListener('click', quickAdd);
+    document.getElementById('quickFoodInput').addEventListener('keydown', e => { if (e.key === 'Enter') quickAdd(); });
 
     document.getElementById('detoxBtn').addEventListener('click', () => {
       const day = ensureDay(activeDateKey);
@@ -554,11 +515,10 @@
       saveStore();
     });
 
-    document.querySelectorAll('.nav-tab').forEach(btn => {
-      btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab')));
-    });
+    document.querySelectorAll('.nav-tab').forEach(btn => btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab'))));
 
     document.getElementById('resetBtn').addEventListener('click', () => {
+      if (!confirm('Reset the selected day?')) return;
       delete store[activeDateKey];
       saveStore();
     });
