@@ -129,7 +129,12 @@
     </div>
   </section>
 
-  <p class="text-center text-[10px] text-zinc-600 mt-6 px-4 leading-relaxed">Estimates only, not medical advice. Talk to a doctor before a major diet change. Your data stays on this device.</p>
+  <!-- ELEGANT MINIMALIST SIGNATURE & FOOTER -->
+  <footer class="mt-8 pt-4 border-t border-zinc-800/60 flex items-center justify-between text-[11px] px-1">
+    <span class="font-mono text-zinc-400 tracking-wider font-medium">Created_by@Ashraful</span>
+    <span class="text-[10px] text-zinc-600">DesiCut v1.0</span>
+  </footer>
+  <p class="text-[10px] text-zinc-600 mt-2 px-1 leading-relaxed">Estimates only, not medical advice. Talk to a doctor before a major diet change. Your data stays on this device.</p>
 
   <!-- GENERIC BOTTOM SHEET -->
   <div id="sheetBg" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-end justify-center" onclick="closeSheet()">
@@ -223,7 +228,6 @@
       { name: 'Double Egg Scramble with 2 Toasted Breads', kcal: 360, pro: 18, fiber: 2 },
       { name: 'Skipped this meal', kcal: 0, pro: 0, fiber: 0 }
     ];
-    // [keywords, kcal, protein, fiber] per single serving or piece
     const FOODS = [
       ['biryani tehari', 650, 24, 3], ['khichuri', 500, 14, 6], ['singara samosa', 180, 3, 2],
       ['dal lentil', 150, 9, 5], ['fish rui ilish pangas', 250, 22, 0], ['beef', 280, 26, 0],
@@ -233,7 +237,6 @@
       ['tea', 80, 2, 0], ['muri', 150, 3, 1], ['burger', 520, 22, 2], ['noodle', 430, 10, 2]
     ];
     const QUICK = ['Singara', 'Tea', 'Roti', 'Fuchka', 'Egg', 'Biscuit', 'Rice'];
-    // [name, kcal, protein, note]
     const DRINKS = [
       ['Milk Tea (Cha)', 80, 2, 'With a little sugar'], ['Black Coffee', 5, 0, 'Clean focus'],
       ['Dudh Cha', 130, 2, 'Condensed milk'], ['Coffee + Sugar', 70, 1, 'Sweet and milky'],
